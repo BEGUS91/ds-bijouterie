@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DS BIJOUTERIE - Alliances, Montres & Joaillerie de Luxe</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter & Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        .glass-header {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased flex flex-col min-h-screen">
+
+    <!-- Top Announcement Bar -->
+    <div id="announcement-bar" class="bg-gradient-to-r from-amber-700 via-yellow-600 to-amber-800 text-white text-xs font-medium py-2 px-4 text-center flex items-center justify-between">
+        <div class="container mx-auto flex justify-between items-center">
+            <p class="w-full text-center sm:text-left flex items-center justify-center sm:justify-start gap-2">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-200 animate-pulse"></i>
+                <span id="announcement-text">Gravure offerte sur toutes nos alliances + Livraison sécurisée offerte dès 50.000 FCFA avec le code <strong class="underline">DSMARIAGE</strong></span>
+            </p>
+            <div class="hidden sm:flex items-center space-x-3 text-xs">
+                <button onclick="openAdminModal()" class="bg-amber-500/30 hover:bg-amber-500/50 text-white border border-amber-300/40 px-3 py-1 rounded-full transition flex items-center gap-1 font-semibold">
+                    <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-amber-200"></i> Gérer Articles (+Ajouter)
+                </button>
+                <button onclick="openSettingsModal()" class="hover:text-amber-200 transition flex items-center gap-1 bg-white/20 px-2.5 py-1 rounded-full">
+                    <i data-lucide="settings" class="w-3 h-3"></i> Configurer Boutique
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header / Navigation -->
+    <header class="sticky top-0 z-40 glass-header border-b border-slate-200/80 transition-all duration-300">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-slate-600 hover:text-amber-600 focus:outline-none">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+
+                <!-- Logo -->
+                <a href="#" class="flex items-center space-x-3 text-left group">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-amber-600 via-yellow-500 to-amber-300 flex items-center justify-center text-slate-900 shadow-md shadow-amber-200 group-hover:scale-105 transition transform font-bold">
+                        <i data-lucide="gem" class="w-5 h-5 text-slate-900"></i>
+                    </div>
+                    <div>
+                        <span id="store-title" class="font-serif text-2xl font-bold tracking-tight text-slate-900 block leading-none">DS BIJOUTERIE</span>
+                        <span id="store-subtitle" class="text-[10px] uppercase tracking-widest text-amber-600 font-semibold block mt-1">Alliances & Montres de Luxe</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex space-x-8 text-sm font-medium">
+                    <a href="#catalog" onclick="filterByCategory('all')" class="text-slate-700 hover:text-amber-600 transition">Tous les articles</a>
+                    <a href="#catalog" onclick="filterByCategory('alliances')" class="text-slate-700 hover:text-amber-600 transition">Alliances</a>
+                    <a href="#catalog" onclick="filterByCategory('montres')" class="text-slate-700 hover:text-amber-600 transition">Montres</a>
+                    <a href="#catalog" onclick="filterByCategory('bagues')" class="text-slate-700 hover:text-amber-600 transition">Solitaires</a>
+                    <a href="#contact" class="text-slate-700 hover:text-amber-600 transition">Contact</a>
+                </nav>
+
+                <!-- Quick Actions / Cart -->
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <button onclick="openAdminModal()" class="md:hidden text-amber-700 bg-amber-100 hover:bg-amber-200 p-2 rounded-full flex items-center gap-1 text-xs font-bold" title="Gérer Articles">
+                        <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                    </button>
+                    <button onclick="openSettingsModal()" class="md:hidden text-slate-600 hover:text-amber-600 p-2" title="Configurer">
+                        <i data-lucide="settings" class="w-5 h-5"></i>
+                    </button>
+
+                    <button onclick="toggleCart()" class="relative p-2.5 bg-slate-900 text-white rounded-full hover:bg-amber-600 transition shadow-md shadow-slate-900/10 flex items-center gap-2 px-4">
+                        <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+                        <span class="hidden sm:inline text-xs font-semibold">Panier</span>
+                        <span id="cart-badge" class="bg-amber-500 text-slate-950 font-bold text-xs w-5 h-5 rounded-full flex items-center justify-center">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-4 space-y-3">
+            <button onclick="openAdminModal(); toggleMobileMenu()" class="w-full text-left font-bold text-amber-700 bg-amber-50 p-2.5 rounded-xl flex items-center gap-2 text-sm">
+                <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                Gérer & Ajouter des articles
+            </button>
+            <a href="#catalog" onclick="filterByCategory('all'); toggleMobileMenu()" class="block text-slate-700 font-medium py-2">Tous les articles</a>
+            <a href="#catalog" onclick="filterByCategory('alliances'); toggleMobileMenu()" class="block text-slate-700 font-medium py-2">Alliances Mariage</a>
+            <a href="#catalog" onclick="filterByCategory('montres'); toggleMobileMenu()" class="block text-slate-700 font-medium py-2">Montres de Luxe</a>
+            <a href="#catalog" onclick="filterByCategory('bagues'); toggleMobileMenu()" class="block text-slate-700 font-medium py-2">Bagues & Solitaires</a>
+            <a href="#contact" onclick="toggleMobileMenu()" class="block text-slate-700 font-medium py-2">Contact & Localisation</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden bg-gradient-to-b from-amber-50/60 via-slate-50 to-slate-50 py-12 lg:py-20">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-100/80 border border-amber-200 text-amber-900 text-xs font-semibold tracking-wide uppercase">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-600"></i> Collection Alliances & Horlogerie 2026
+                    </div>
+                    
+                    <h1 id="hero-headline" class="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 tracking-tight leading-tight">
+                        L'élégance éternelle pour vos plus beaux engagements
+                    </h1>
+                    
+                    <p id="hero-subtext" class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
+                        Spécialiste des alliances de mariage d'exception, des montres de prestige et des bijoux haut de gamme façonnés pour sublimer vos moments inoubliables.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                        <a href="#catalog" class="w-full sm:w-auto px-8 py-4 bg-slate-900 text-white font-medium rounded-full hover:bg-amber-600 transition shadow-xl shadow-slate-900/10 flex items-center justify-center gap-2 group">
+                            Découvrir nos Collections
+                            <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition"></i>
+                        </a>
+                        <button onclick="openAdminModal()" class="w-full sm:w-auto px-8 py-4 bg-amber-100 text-amber-900 font-bold rounded-full hover:bg-amber-200 transition flex items-center justify-center gap-2">
+                            <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                            Ajouter un Article
+                        </button>
+                    </div>
+
+                    <div class="pt-8 border-t border-slate-200/80 grid grid-cols-3 gap-4 text-center lg:text-left">
+                        <div>
+                            <p class="font-bold text-lg sm:text-xl text-slate-900">Or 18K / Acier</p>
+                            <p class="text-xs text-slate-500">Qualité Certifiée</p>
+                        </div>
+                        <div>
+                            <p class="font-bold text-lg sm:text-xl text-slate-900">Offerte</p>
+                            <p class="text-xs text-slate-500">Gravure Personnalisée</p>
+                        </div>
+                        <div>
+                            <p class="font-bold text-lg sm:text-xl text-slate-900">4.9/5 ★</p>
+                            <p class="text-xs text-slate-500">Satisfaction Clients</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 relative">
+                    <div class="relative mx-auto max-w-md lg:max-w-none">
+                        <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-white">
+                            <img id="hero-img" src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=1000&auto=format&fit=crop" alt="Alliances DS Bijouterie" class="w-full h-[450px] object-cover object-center transform hover:scale-105 transition duration-700">
+                            
+                            <div class="absolute bottom-6 left-6 right-6 bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-slate-100 flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
+                                    <i data-lucide="gem" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-slate-900">Gravure sur alliance offerte !</h4>
+                                    <p class="text-xs text-slate-500">Personnalisez vos bagues avec prénoms ou date de votre choix.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Catalog Section -->
+    <section id="catalog" class="py-12 lg:py-16 bg-white flex-1">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+                <div>
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">Notre Catalogue d'Exception</h2>
+                    <p class="text-slate-500 text-sm mt-2">Explorez nos créations uniques sélectionnées pour leur beauté et leur finesse.</p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center gap-3">
+                    <button onclick="openAdminModal()" class="w-full sm:w-auto px-4 py-2.5 bg-amber-600 text-white rounded-full text-xs font-bold hover:bg-amber-700 transition flex items-center justify-center gap-1.5 shadow-md shadow-amber-600/20">
+                        <i data-lucide="plus" class="w-4 h-4"></i> Ajouter un Article
+                    </button>
+
+                    <div class="relative w-full sm:w-64">
+                        <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="search-input" oninput="handleSearch()" placeholder="Rechercher un article..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-full text-xs focus:outline-none focus:border-amber-500 focus:bg-white transition">
+                    </div>
+                    <select id="sort-select" onchange="handleSort()" class="w-full sm:w-auto py-2.5 px-4 bg-slate-50 border border-slate-200 rounded-full text-xs font-medium text-slate-700 focus:outline-none focus:border-amber-500">
+                        <option value="default">Tri par défaut</option>
+                        <option value="price-asc">Prix : croissant</option>
+                        <option value="price-desc">Prix : décroissant</option>
+                        <option value="popular">Les plus populaires</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Categories Tabs -->
+            <div id="category-tabs" class="flex items-center gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar">
+                <!-- Dynamically populated categories -->
+            </div>
+
+            <!-- Products Grid -->
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+                <!-- Dynamically rendered products -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="hidden text-center py-16">
+                <div class="w-16 h-16 bg-amber-50 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="search-x" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900">Aucun article trouvé</h3>
+                <p class="text-slate-500 text-sm mt-1">Essayez de modifier votre recherche ou ajoutez un nouvel article.</p>
+                <div class="flex items-center justify-center gap-3 mt-4">
+                    <button onclick="filterByCategory('all')" class="px-6 py-2.5 bg-slate-900 text-white text-xs font-semibold rounded-full hover:bg-amber-600 transition">
+                        Voir tous les articles
+                    </button>
+                    <button onclick="openAdminModal()" class="px-6 py-2.5 bg-amber-600 text-white text-xs font-bold rounded-full hover:bg-amber-700 transition">
+                        + Ajouter un article
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Product Detail Modal -->
+    <div id="product-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl relative max-h-[90vh] flex flex-col md:flex-row">
+            <button onclick="closeProductModal()" class="absolute top-4 right-4 z-10 w-9 h-9 bg-white/80 hover:bg-white rounded-full flex items-center justify-center text-slate-700 shadow-md">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div class="md:w-1/2 bg-slate-100">
+                <img id="modal-img" src="" alt="Produit" class="w-full h-64 md:h-full object-cover">
+            </div>
+            <div class="md:w-1/2 p-6 sm:p-8 flex flex-col justify-between overflow-y-auto">
+                <div>
+                    <span id="modal-category" class="text-[10px] font-bold tracking-widest uppercase text-amber-600">Catégorie</span>
+                    <h3 id="modal-title" class="font-serif text-2xl font-bold text-slate-900 mt-1">Titre Produit</h3>
+                    <div class="flex items-center gap-3 mt-3">
+                        <span id="modal-price" class="text-2xl font-bold text-amber-700">0 FCFA</span>
+                        <span id="modal-old-price" class="text-sm text-slate-400 line-through"></span>
+                    </div>
+                    <p id="modal-desc" class="text-slate-600 text-xs leading-relaxed mt-4">Description du produit...</p>
+                    
+                    <div id="modal-engraving-container" class="mt-5 space-y-2">
+                        <label class="block text-xs font-semibold text-slate-700">Texte pour la gravure offerte (optionnel) :</label>
+                        <input type="text" id="modal-engraving-input" placeholder="Ex: Marie & Marc - 12/06/2026" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-amber-500">
+                    </div>
+                </div>
+
+                <div class="pt-6 mt-6 border-t border-slate-100 flex flex-col gap-3">
+                    <button id="modal-add-btn" class="w-full py-3.5 bg-slate-900 text-white text-xs font-bold rounded-full hover:bg-amber-600 transition flex items-center justify-center gap-2">
+                        <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+                        Ajouter au Panier
+                    </button>
+                    <button id="modal-direct-wa-btn" class="w-full py-3 bg-emerald-600 text-white text-xs font-bold rounded-full hover:bg-emerald-700 transition flex items-center justify-center gap-2">
+                        <i data-lucide="message-circle" class="w-4 h-4"></i>
+                        Commander Directement sur WhatsApp
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Products Management Modal -->
+    <div id="admin-products-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-3xl w-full p-6 sm:p-8 shadow-2xl relative max-h-[90vh] flex flex-col">
+            
+            <button onclick="closeAdminModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+
+            <!-- Admin Header -->
+            <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+                <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center">
+                    <i data-lucide="layout-grid" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg text-slate-900">Espace Admin : Gestion des Articles</h3>
+                    <p class="text-xs text-slate-500">Ajoutez de nouveaux bijoux, ajustez les prix ou gérez votre catalogue</p>
+                </div>
+            </div>
+
+            <!-- Tabs: Add Article vs List Articles -->
+            <div class="flex gap-2 mb-6 bg-slate-100 p-1.5 rounded-2xl">
+                <button id="admin-tab-add-btn" onclick="switchAdminTab('add')" class="flex-1 py-2 text-xs font-bold rounded-xl bg-white shadow-sm text-slate-900 flex items-center justify-center gap-2">
+                    <i data-lucide="plus-circle" class="w-4 h-4 text-amber-600"></i> Ajouter un Article
+                </button>
+                <button id="admin-tab-list-btn" onclick="switchAdminTab('list')" class="flex-1 py-2 text-xs font-bold rounded-xl text-slate-600 hover:text-slate-900 flex items-center justify-center gap-2">
+                    <i data-lucide="list" class="w-4 h-4"></i> Voir tous les articles (<span id="admin-products-count">0</span>)
+                </button>
+            </div>
+
+            <!-- TAB 1: Add/Edit Product Form -->
+            <div id="admin-tab-add-content" class="overflow-y-auto flex-1 pr-1">
+                <form onsubmit="saveProductFromAdmin(event)" class="space-y-4 text-xs">
+                    <input type="hidden" id="prod-edit-id" value="">
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="sm:col-span-2">
+                            <label class="block font-semibold text-slate-700 mb-1">Nom du produit / Titre *</label>
+                            <input type="text" id="prod-name" required placeholder="Ex: alliance Or Jaune 18K 'Éternité'" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-amber-500">
+                        </div>
+
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Catégorie *</label>
+                            <select id="prod-category" required class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-amber-500 font-medium">
+                                <option value="alliances">Alliances Mariage</option>
+                                <option value="montres">Montres de Luxe</option>
+                                <option value="bagues">Bagues & Solitaires</option>
+                                <option value="bijoux">Autres Bijoux</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Badge / Tag (Optionnel)</label>
+                            <input type="text" id="prod-tag" placeholder="Ex: Best-Seller, Promo, Nouveauté" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-amber-500">
+                        </div>
+
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Prix (FCFA) *</label>
+                            <input type="number" id="prod-price" required min="0" placeholder="Ex: 120000" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-amber-500">
+                        </div>
+
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Ancien Prix (Barré - Optionnel)</label>
+                            <input type="number" id="prod-old-price" min="0" placeholder="Ex: 150000" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-amber-500">
+                        </div>
+
+                        <div class="sm:col-span-2">
+                            <label class="block font-semibold text-slate-700 mb-1">Lien de l'image (URL photo) *</label>
+                            <input type="url" id="prod-image" required placeholder="https://images.unsplash.com/photo-..." class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-amber-500">
+                            <p class="text-[10px] text-slate-400 mt-1">Conseil : Vous pouvez coller un lien d'image Unsplash, Pinterest ou hébergée sur votre serveur.</p>
+                        </div>
+
+                        <div class="sm:col-span-2">
+                            <label class="block font-semibold text-slate-700 mb-1">Description détaillée *</label>
+                            <textarea id="prod-desc" required rows="3" placeholder="Présentez la qualité du métal, les finitions, la garantie..." class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-amber-500"></textarea>
+                        </div>
+
+                        <div class="sm:col-span-2 flex items-center justify-between p-3 bg-amber-50/50 rounded-xl border border-amber-100">
+                            <label class="flex items-center gap-2 cursor-pointer text-slate-800 font-semibold">
+                                <input type="checkbox" id="prod-is-ring" class="w-4 h-4 text-amber-600 rounded">
+                                Activer le champ "Gravure offerte" pour cet article
+                            </label>
+                            <span class="text-[10px] text-amber-700 font-medium">Recommandé pour les bagues et alliances</span>
+                        </div>
+
+                        <div class="sm:col-span-2 flex items-center gap-2">
+                            <input type="checkbox" id="prod-popular" class="w-4 h-4 text-amber-600 rounded">
+                            <label for="prod-popular" class="font-semibold text-slate-800 cursor-pointer">Mettre en avant comme article populaire</label>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 flex justify-end gap-3 border-t border-slate-100">
+                        <button type="button" onclick="closeAdminModal()" class="px-5 py-2.5 text-slate-600 hover:bg-slate-100 rounded-xl font-semibold">Annuler</button>
+                        <button type="submit" id="prod-submit-btn" class="px-7 py-2.5 bg-slate-900 text-white font-bold rounded-xl hover:bg-amber-600 transition flex items-center gap-2">
+                            <i data-lucide="check" class="w-4 h-4"></i> Enregistrer l'Article
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- TAB 2: Manage Articles List -->
+            <div id="admin-tab-list-content" class="hidden overflow-y-auto flex-1 pr-1 space-y-3">
+                <div id="admin-products-list" class="space-y-3">
+                    <!-- Dynamic list of products for editing / deleting -->
+                </div>
+
+                <div class="pt-4 border-t border-slate-100 flex justify-between items-center text-xs">
+                    <button onclick="resetDefaultProducts()" class="text-xs text-red-600 hover:underline font-semibold flex items-center gap-1">
+                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Réinitialiser les articles par défaut
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Slide-over Cart Panel -->
+    <div id="cart-overlay" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300" onclick="toggleCart()"></div>
+    <div id="cart-panel" class="fixed top-0 right-0 bottom-0 z-50 w-full max-w-md bg-white shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+        
+        <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-900 text-white">
+            <div class="flex items-center gap-2">
+                <i data-lucide="shopping-bag" class="w-5 h-5 text-amber-400"></i>
+                <h3 class="font-bold text-base">Votre Panier</h3>
+            </div>
+            <button onclick="toggleCart()" class="p-1 hover:bg-white/10 rounded-full text-slate-300">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <div id="cart-items-container" class="flex-1 overflow-y-auto p-5 space-y-4">
+            <!-- Dynamically populated cart items -->
+        </div>
+
+        <div class="p-5 border-t border-slate-100 bg-slate-50 space-y-4">
+            <div class="flex gap-2">
+                <input type="text" id="promo-input" placeholder="Code promo (ex: DSMARIAGE)" class="flex-1 px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs uppercase focus:outline-none focus:border-amber-500">
+                <button onclick="applyPromoCode()" class="px-4 py-2 bg-slate-800 text-white text-xs font-semibold rounded-lg hover:bg-amber-600 transition">Appliquer</button>
+            </div>
+
+            <div class="space-y-1.5 text-xs text-slate-600 pt-2">
+                <div class="flex justify-between">
+                    <span>Sous-total :</span>
+                    <span id="cart-subtotal" class="font-semibold text-slate-900">0 FCFA</span>
+                </div>
+                <div id="discount-row" class="flex justify-between text-emerald-600 hidden">
+                    <span>Remise promo :</span>
+                    <span id="cart-discount">-0 FCFA</span>
+                </div>
+                <div class="flex justify-between text-sm font-bold text-slate-900 pt-2 border-t border-slate-200">
+                    <span>Total estimé :</span>
+                    <span id="cart-total" class="text-amber-700">0 FCFA</span>
+                </div>
+            </div>
+
+            <button onclick="checkoutWhatsApp()" class="w-full py-4 bg-emerald-600 text-white text-xs font-bold rounded-full hover:bg-emerald-700 transition shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2">
+                <i data-lucide="message-circle" class="w-5 h-5"></i>
+                Valider la Commande via WhatsApp
+            </button>
+            <p class="text-[10px] text-center text-slate-400">Paiement sécurisé à la livraison ou via Mobile Money (Wave, Orange, MTN).</p>
+        </div>
+    </div>
+
+    <!-- Store Customization Settings Modal -->
+    <div id="settings-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative">
+            <button onclick="closeSettingsModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center">
+                    <i data-lucide="settings" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg text-slate-900">Personnaliser la Boutique</h3>
+                    <p class="text-xs text-slate-500">Modifiez facilement les coordonnées de DS BIJOUTERIE</p>
+                </div>
+            </div>
+
+            <form onsubmit="saveSettings(event)" class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Nom de la boutique :</label>
+                    <input type="text" id="setting-name" class="w-full px-3 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Sous-titre / Slogan :</label>
+                    <input type="text" id="setting-subtitle" class="w-full px-3 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Numéro WhatsApp (avec indicatif) :</label>
+                    <input type="text" id="setting-whatsapp" placeholder="Ex: +2250700000000" class="w-full px-3 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Devise :</label>
+                    <input type="text" id="setting-currency" placeholder="FCFA, €, $, etc." class="w-full px-3 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:border-amber-500">
+                </div>
+                <div class="pt-4 flex justify-end gap-3">
+                    <button type="button" onclick="closeSettingsModal()" class="px-4 py-2.5 text-slate-600 hover:bg-slate-100 rounded-lg">Annuler</button>
+                    <button type="submit" class="px-6 py-2.5 bg-slate-900 text-white font-bold rounded-lg hover:bg-amber-600 transition">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i>
+        <span id="toast-message" class="text-xs font-semibold">Article ajouté au panier !</span>
+    </div>
+
+    <!-- Floating WhatsApp Button -->
+    <a id="floating-wa-btn" href="#" target="_blank" class="fixed bottom-6 left-6 z-40 bg-emerald-600 hover:bg-emerald-700 text-white p-3.5 rounded-full shadow-2xl transition duration-300 transform hover:scale-110 flex items-center gap-2 group">
+        <i data-lucide="message-circle" class="w-6 h-6"></i>
+        <span class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap text-xs font-bold pr-1">Commander sur WhatsApp</span>
+    </a>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-slate-900 text-slate-300 py-12 border-t border-slate-800 mt-auto">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-slate-800">
+                
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center text-slate-900 font-bold">
+                            <i data-lucide="gem" class="w-4 h-4 text-slate-900"></i>
+                        </div>
+                        <span id="footer-store-name" class="font-serif text-xl font-bold text-white tracking-wide">DS BIJOUTERIE</span>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Maison spécialisée dans les alliances de mariage, l'horlogerie de prestige et les bijoux personnalisés. La perfection et l'éclat pour célébrer vos précieux moments.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-semibold text-sm mb-4">Navigation</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#catalog" onclick="filterByCategory('alliances')" class="hover:text-amber-400 transition">Alliances Mariage</a></li>
+                        <li><a href="#catalog" onclick="filterByCategory('montres')" class="hover:text-amber-400 transition">Montres de Luxe</a></li>
+                        <li><a href="#catalog" onclick="filterByCategory('bagues')" class="hover:text-amber-400 transition">Bagues & Solitaires</a></li>
+                        <li><a href="#catalog" onclick="filterByCategory('bijoux')" class="hover:text-amber-400 transition">Autres Bijoux</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-semibold text-sm mb-4">Engagements</h4>
+                    <ul class="space-y-2 text-xs text-slate-400">
+                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-amber-500"></i> Gravure sur alliance offerte</li>
+                        <li class="flex items-center gap-2"><i data-lucide="shield-check" class="w-3.5 h-3.5 text-amber-500"></i> Bijoux & Montres certifiés</li>
+                        <li class="flex items-center gap-2"><i data-lucide="truck" class="w-3.5 h-3.5 text-amber-500"></i> Livraison sécurisée</li>
+                        <li class="flex items-center gap-2"><i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-amber-500"></i> Ajustement taille garanti</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-semibold text-sm mb-4">Contact Direct</h4>
+                    <div class="space-y-3 text-xs">
+                        <p class="flex items-center gap-2 text-slate-300">
+                            <i data-lucide="phone" class="w-4 h-4 text-amber-500"></i>
+                            <span id="footer-phone">+225 07 00 00 00 00</span>
+                        </p>
+                        <p class="flex items-center gap-2 text-slate-300">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-amber-500"></i>
+                            <span>Boutique DS BIJOUTERIE</span>
+                        </p>
+                        <a id="footer-wa-link" href="#" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition text-xs font-semibold mt-2">
+                            <i data-lucide="message-circle" class="w-4 h-4"></i>
+                            Discuter sur WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+                <p>© 2026 DS BIJOUTERIE. Tous droits réservés.</p>
+                <div class="flex items-center space-x-3 text-[11px]">
+                    <span class="px-2 py-1 bg-slate-800 rounded">Wave</span>
+                    <span class="px-2 py-1 bg-slate-800 rounded">Orange Money</span>
+                    <span class="px-2 py-1 bg-slate-800 rounded">MTN Money</span>
+                    <span class="px-2 py-1 bg-slate-800 rounded">Espèces</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Logic Script -->
+    <script>
+        // Store Config State
+        let storeConfig = {
+            name: "DS BIJOUTERIE",
+            subtitle: "Alliances, Montres & Joaillerie de Luxe",
+            whatsapp: "+2250700000000",
+            currency: "FCFA"
+        };
+
+        /* Load & Save Store Settings Persistence */
+        function loadStoreConfig() {
+            const saved = localStorage.getItem('ds_bijouterie_config');
+            if (saved) {
+                try {
+                    storeConfig = { ...storeConfig, ...JSON.parse(saved) };
+                } catch(e) {}
+            }
+            applyStoreConfigUI();
+        }
+
+        function saveStoreConfig() {
+            localStorage.setItem('ds_bijouterie_config', JSON.stringify(storeConfig));
+        }
+
+        function applyStoreConfigUI() {
+            const cleanWa = storeConfig.whatsapp.replace(/[^0-9]/g, '');
+            const waLink = `https://wa.me/${cleanWa}`;
+
+            if (document.getElementById('store-title')) document.getElementById('store-title').innerText = storeConfig.name;
+            if (document.getElementById('store-subtitle')) document.getElementById('store-subtitle').innerText = storeConfig.subtitle;
+            if (document.getElementById('footer-store-name')) document.getElementById('footer-store-name').innerText = storeConfig.name;
+            if (document.getElementById('footer-phone')) document.getElementById('footer-phone').innerText = storeConfig.whatsapp;
+            
+            const footerWaLink = document.getElementById('footer-wa-link');
+            if (footerWaLink) footerWaLink.href = waLink;
+
+            const floatingWaBtn = document.getElementById('floating-wa-btn');
+            if (floatingWaBtn) floatingWaBtn.href = waLink;
+        }
+
+        // Initial default products list
+        const INITIAL_PRODUCTS = [
+            {
+                id: 1,
+                name: "Duo d'Alliances Or Blanc 18K & Diamants 'Éternité'",
+                category: "alliances",
+                categoryLabel: "Alliances Mariage",
+                price: 185000,
+                oldPrice: 210000,
+                image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=800&auto=format&fit=crop",
+                tag: "Best-Seller Mariage",
+                desc: "Paire d'alliances d'exception en Or blanc 18 carats. Sertissage de diamants étincelants pour elle et finition brossée noble pour lui. Gravure des prénoms offerte.",
+                popular: true,
+                isRing: true
+            },
+            {
+                id: 2,
+                name: "Montre Chronographe Automatique 'Prestige Gold'",
+                category: "montres",
+                categoryLabel: "Montres",
+                price: 125000,
+                oldPrice: 145000,
+                image: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=800&auto=format&fit=crop",
+                tag: "Haute Horlogerie",
+                desc: "Montre masculine au design raffiné, mouvement automatique de précision, cadran noir épuré et verre saphir inrayable.",
+                popular: true,
+                isRing: false
+            },
+            {
+                id: 3,
+                name: "Alliance Homme Or Jaune 18K 'Classique Impérial'",
+                category: "alliances",
+                categoryLabel: "Alliances Mariage",
+                price: 95000,
+                oldPrice: null,
+                image: "https://images.unsplash.com/photo-1598560917505-59a3ad559071?q=80&w=800&auto=format&fit=crop",
+                tag: "Intemporel",
+                desc: "Alliance traditionnelle bombée en Or jaune massif 18 carats. Confort intérieur optimal et brillance longue durée. Gravure offerte.",
+                popular: false,
+                isRing: true
+            },
+            {
+                id: 4,
+                name: "Montre Femme Cadran Nacre & Bracelet Cuir Surpiqué",
+                category: "montres",
+                categoryLabel: "Montres",
+                price: 65000,
+                oldPrice: 78000,
+                image: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?q=80&w=800&auto=format&fit=crop",
+                tag: "Élégance",
+                desc: "Design chic et féminin avec cadran nacré, détails dorés et véritable cuir marron surpiqué. Étanchéité 50m.",
+                popular: true,
+                isRing: false
+            },
+            {
+                id: 5,
+                name: "Solitaire Bague de Fiançailles Diamant 'Lumière Royale'",
+                category: "bagues",
+                categoryLabel: "Bagues & Solitaires",
+                price: 140000,
+                oldPrice: 165000,
+                image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=800&auto=format&fit=crop",
+                tag: "Fiançailles",
+                desc: "Bague de fiançailles somptueuse en Or blanc sertie d'un diamant central taille brillant d'une clarté exceptionnelle.",
+                popular: true,
+                isRing: true
+            },
+            {
+                id: 6,
+                name: "Montre Squelette Mécanique 'Royal Chrono Steel'",
+                category: "montres",
+                categoryLabel: "Montres",
+                price: 150000,
+                oldPrice: 180000,
+                image: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=800&auto=format&fit=crop",
+                tag: "Édition Limitée",
+                desc: "Montre mécanique d'exception au cadran squelette transparent laissant apparaître le mouvement complexe de la montre.",
+                popular: false,
+                isRing: false
+            },
+            {
+                id: 7,
+                name: "Collier Pendentif Cœur Zirconium & Chaîne Or 18K",
+                category: "bijoux",
+                categoryLabel: "Autres Bijoux",
+                price: 35000,
+                oldPrice: 42000,
+                image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=800&auto=format&fit=crop",
+                tag: "Cadeau Idéal",
+                desc: "Pendentif raffiné en forme de cœur orné de zircons étincelants sur une fine chaîne plaquée Or 18k.",
+                popular: true,
+                isRing: false
+            },
+            {
+                id: 8,
+                name: "Bracelet Jonc Rigide Acier Doré & Cristaux",
+                category: "bijoux",
+                categoryLabel: "Autres Bijoux",
+                price: 28000,
+                oldPrice: null,
+                image: "https://images.unsplash.com/photo-1611591475281-8d9954a2be31?q=80&w=800&auto=format&fit=crop",
+                tag: "Tendance",
+                desc: "Bracelet jonc rigide haut de gamme, résistant à l'eau et inaltérable. Fermoir sécurisé magnétisé.",
+                popular: false,
+                isRing: false
+            }
+        ];
+
+        // Categories Map
+        const CATEGORIES_MAP = {
+            "alliances": "Alliances Mariage",
+            "montres": "Montres",
+            "bagues": "Bagues & Solitaires",
+            "bijoux": "Autres Bijoux"
+        };
+
+        // Categories List
+        const categoriesData = [
+            { id: "all", label: "Tous les articles", icon: "sparkles" },
+            { id: "alliances", label: "Alliances Mariage", icon: "gem" },
+            { id: "montres", label: "Montres de Luxe", icon: "watch" },
+            { id: "bagues", label: "Bagues & Solitaires", icon: "sparkles" },
+            { id: "bijoux", label: "Autres Bijoux", icon: "shopping-bag" }
+        ];
+
+        // Dynamic Products State loaded from localStorage
+        let productsData = [];
+        let cart = [];
+        let activeCategory = "all";
+        let searchQuery = "";
+        let currentSort = "default";
+        let selectedProductForModal = null;
+        let appliedDiscountPercent = 0;
+
+        /* Load & Save Products Persistence */
+        function loadProductsFromStorage() {
+            const saved = localStorage.getItem('ds_bijouterie_products');
+            if (saved) {
+                try {
+                    productsData = JSON.parse(saved);
+                } catch(e) {
+                    productsData = [...INITIAL_PRODUCTS];
+                }
+            } else {
+                productsData = [...INITIAL_PRODUCTS];
+                saveProductsToStorage();
+            }
+        }
+
+        function saveProductsToStorage() {
+            localStorage.setItem('ds_bijouterie_products', JSON.stringify(productsData));
+        }
+
+        function formatPrice(amount) {
+            return Number(amount).toLocaleString('fr-FR') + ' ' + storeConfig.currency;
+        }
+
+        /* Render Categories Tabs */
+        function renderCategories() {
+            const container = document.getElementById('category-tabs');
+            if (!container) return;
+
+            container.innerHTML = categoriesData.map(cat => {
+                const isActive = activeCategory === cat.id;
+                return `
+                    <button onclick="filterByCategory('${cat.id}')" class="px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap transition flex items-center gap-2 ${
+                        isActive 
+                            ? 'bg-slate-900 text-white shadow-md' 
+                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    }">
+                        <i data-lucide="${cat.icon}" class="w-3.5 h-3.5"></i>
+                        ${cat.label}
+                    </button>
+                `;
+            }).join('');
+            
+            if (window.lucide) lucide.createIcons();
+        }
+
+        /* Filter & Sort Products */
+        function getFilteredProducts() {
+            let list = [...productsData];
+
+            if (activeCategory !== 'all') {
+                list = list.filter(p => p.category === activeCategory);
+            }
+
+            if (searchQuery.trim() !== '') {
+                const q = searchQuery.toLowerCase();
+                list = list.filter(p => p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q));
+            }
+
+            if (currentSort === 'price-asc') {
+                list.sort((a, b) => a.price - b.price);
+            } else if (currentSort === 'price-desc') {
+                list.sort((a, b) => b.price - a.price);
+            } else if (currentSort === 'popular') {
+                list.sort((a, b) => (b.popular ? 1 : 0) - (a.popular ? 1 : 0));
+            }
+
+            return list;
+        }
+
+        /* Render Products Grid */
+        function renderProducts() {
+            const grid = document.getElementById('product-grid');
+            const emptyState = document.getElementById('empty-state');
+            if (!grid) return;
+
+            const products = getFilteredProducts();
+
+            if (products.length === 0) {
+                grid.innerHTML = '';
+                if (emptyState) emptyState.classList.remove('hidden');
+                return;
+            }
+
+            if (emptyState) emptyState.classList.add('hidden');
+
+            grid.innerHTML = products.map(product => {
+                return `
+                    <div class="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl transition duration-300 flex flex-col group">
+                        <div class="relative overflow-hidden bg-slate-100 h-64 cursor-pointer" onclick="openProductModal(${product.id})">
+                            <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover object-center group-hover:scale-105 transition duration-500" onerror="this.src='https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=800&auto=format&fit=crop'">
+                            
+                            ${product.tag ? `<span class="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md text-amber-300 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">${product.tag}</span>` : ''}
+                        </div>
+
+                        <div class="p-5 flex-1 flex flex-col justify-between">
+                            <div>
+                                <span class="text-[10px] font-bold text-amber-600 uppercase tracking-widest block mb-1">${product.categoryLabel || CATEGORIES_MAP[product.category]}</span>
+                                <h3 onclick="openProductModal(${product.id})" class="font-serif font-bold text-slate-900 text-base leading-snug cursor-pointer hover:text-amber-600 transition line-clamp-2">
+                                    ${product.name}
+                                </h3>
+                                <p class="text-xs text-slate-500 mt-2 line-clamp-2 leading-relaxed">${product.desc}</p>
+                            </div>
+
+                            <div class="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between">
+                                <div>
+                                    <span class="font-bold text-slate-900 text-lg block">${formatPrice(product.price)}</span>
+                                    ${product.oldPrice ? `<span class="text-xs text-slate-400 line-through">${formatPrice(product.oldPrice)}</span>` : ''}
+                                </div>
+                                <button onclick="addToCart(${product.id})" class="p-3 bg-amber-100 text-amber-900 hover:bg-slate-900 hover:text-white rounded-full transition shadow-sm">
+                                    <i data-lucide="plus" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function openAdminModal() {
+            switchAdminTab('add');
+            updateAdminListUI();
+            document.getElementById('admin-products-modal').classList.remove('hidden');
+        }
+
+        function closeAdminModal() {
+            document.getElementById('admin-products-modal').classList.add('hidden');
+            resetAdminForm();
+        }
+
+        function switchAdminTab(tab) {
+            const addBtn = document.getElementById('admin-tab-add-btn');
+            const listBtn = document.getElementById('admin-tab-list-btn');
+            const addContent = document.getElementById('admin-tab-add-content');
+            const listContent = document.getElementById('admin-tab-list-content');
+
+            if (tab === 'add') {
+                addBtn.className = "flex-1 py-2 text-xs font-bold rounded-xl bg-white shadow-sm text-slate-900 flex items-center justify-center gap-2";
+                listBtn.className = "flex-1 py-2 text-xs font-bold rounded-xl text-slate-600 hover:text-slate-900 flex items-center justify-center gap-2";
+                addContent.classList.remove('hidden');
+                listContent.classList.add('hidden');
+            } else {
+                listBtn.className = "flex-1 py-2 text-xs font-bold rounded-xl bg-white shadow-sm text-slate-900 flex items-center justify-center gap-2";
+                addBtn.className = "flex-1 py-2 text-xs font-bold rounded-xl text-slate-600 hover:text-slate-900 flex items-center justify-center gap-2";
+                listContent.classList.remove('hidden');
+                addContent.classList.add('hidden');
+                updateAdminListUI();
+            }
+        }
+
+        function resetAdminForm() {
+            document.getElementById('prod-edit-id').value = "";
+            document.getElementById('prod-name').value = "";
+            document.getElementById('prod-category').value = "alliances";
+            document.getElementById('prod-tag').value = "";
+            document.getElementById('prod-price').value = "";
+            document.getElementById('prod-old-price').value = "";
+            document.getElementById('prod-image').value = "";
+            document.getElementById('prod-desc').value = "";
+            document.getElementById('prod-is-ring').checked = false;
+            document.getElementById('prod-popular').checked = false;
+            document.getElementById('prod-submit-btn').innerHTML = `<i data-lucide="check" class="w-4 h-4"></i> Enregistrer l'Article`;
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function saveProductFromAdmin(e) {
+            e.preventDefault();
+
+            const editId = document.getElementById('prod-edit-id').value;
+            const name = document.getElementById('prod-name').value.trim();
+            const category = document.getElementById('prod-category').value;
+            const tag = document.getElementById('prod-tag').value.trim();
+            const price = parseFloat(document.getElementById('prod-price').value);
+            const oldPriceVal = document.getElementById('prod-old-price').value;
+            const oldPrice = oldPriceVal ? parseFloat(oldPriceVal) : null;
+            const image = document.getElementById('prod-image').value.trim();
+            const desc = document.getElementById('prod-desc').value.trim();
+            const isRing = document.getElementById('prod-is-ring').checked;
+            const popular = document.getElementById('prod-popular').checked;
+
+            if (editId) {
+                // Update existing product
+                const index = productsData.findIndex(p => p.id == editId);
+                if (index !== -1) {
+                    productsData[index] = {
+                        ...productsData[index],
+                        name,
+                        category,
+                        categoryLabel: CATEGORIES_MAP[category],
+                        tag,
+                        price,
+                        oldPrice,
+                        image,
+                        desc,
+                        isRing,
+                        popular
+                    };
+                    showToast('Article modifié avec succès !');
+                }
+            } else {
+                // Add new product
+                const newId = Date.now();
+                const newProduct = {
+                    id: newId,
+                    name,
+                    category,
+                    categoryLabel: CATEGORIES_MAP[category],
+                    price,
+                    oldPrice,
+                    image,
+                    tag: tag || "Nouveauté",
+                    desc,
+                    popular,
+                    isRing
+                };
+                productsData.unshift(newProduct);
+                showToast('Nouvel article ajouté au catalogue !');
+            }
+
+            saveProductsToStorage();
+            renderProducts();
+            closeAdminModal();
+        }
+
+        function editProductFromAdmin(id) {
+            const product = productsData.find(p => p.id == id);
+            if (!product) return;
+
+            document.getElementById('prod-edit-id').value = product.id;
+            document.getElementById('prod-name').value = product.name;
+            document.getElementById('prod-category').value = product.category;
+            document.getElementById('prod-tag').value = product.tag || '';
+            document.getElementById('prod-price').value = product.price;
+            document.getElementById('prod-old-price').value = product.oldPrice || '';
+            document.getElementById('prod-image').value = product.image;
+            document.getElementById('prod-desc').value = product.desc;
+            document.getElementById('prod-is-ring').checked = !!product.isRing;
+            document.getElementById('prod-popular').checked = !!product.popular;
+
+            document.getElementById('prod-submit-btn').innerHTML = `<i data-lucide="check" class="w-4 h-4"></i> Mettre à jour l'article`;
+            switchAdminTab('add');
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function deleteProductFromAdmin(id) {
+            productsData = productsData.filter(p => p.id != id);
+            saveProductsToStorage();
+            renderProducts();
+            updateAdminListUI();
+            showToast('Article supprimé du catalogue.');
+        }
+
+        function resetDefaultProducts() {
+            productsData = [...INITIAL_PRODUCTS];
+            saveProductsToStorage();
+            renderProducts();
+            updateAdminListUI();
+            showToast('Catalogue réinitialisé aux articles par défaut.');
+        }
+
+        function updateAdminListUI() {
+            const countEl = document.getElementById('admin-products-count');
+            const listEl = document.getElementById('admin-products-list');
+            if (!countEl || !listEl) return;
+
+            countEl.innerText = productsData.length;
+
+            if (productsData.length === 0) {
+                listEl.innerHTML = `<p class="text-center py-8 text-slate-400 text-xs">Aucun article disponible dans votre catalogue.</p>`;
+                return;
+            }
+
+            listEl.innerHTML = productsData.map(p => `
+                <div class="flex items-center gap-3 bg-slate-50 p-3 rounded-2xl border border-slate-100 justify-between">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <img src="${p.image}" class="w-12 h-12 rounded-xl object-cover shrink-0" onerror="this.src='https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=800&auto=format&fit=crop'">
+                        <div class="min-w-0">
+                            <h4 class="font-bold text-xs text-slate-900 truncate">${p.name}</h4>
+                            <p class="text-[10px] text-slate-500 font-semibold">${CATEGORIES_MAP[p.category] || p.category} • <span class="text-amber-700 font-bold">${formatPrice(p.price)}</span></p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button onclick="editProductFromAdmin(${p.id})" class="px-3 py-1.5 bg-amber-100 text-amber-900 hover:bg-amber-200 rounded-lg text-xs font-semibold flex items-center gap-1">
+                            <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Modifier
+                        </button>
+                        <button onclick="deleteProductFromAdmin(${p.id})" class="p-1.5 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg text-xs">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            if (window.lucide) lucide.createIcons();
+        }
+
+        /* Cart Operations */
+        function addToCart(productId, engraving = "") {
+            const product = productsData.find(p => p.id === productId);
+            if (!product) return;
+
+            const existingIndex = cart.findIndex(item => item.id === productId && item.engraving === engraving);
+            if (existingIndex > -1) {
+                cart[existingIndex].qty += 1;
+            } else {
+                cart.push({ ...product, qty: 1, engraving: engraving });
+            }
+
+            updateCartUI();
+            showToast(`${product.name} ajouté au panier !`);
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function updateCartQty(index, delta) {
+            if (cart[index]) {
+                cart[index].qty += delta;
+                if (cart[index].qty <= 0) {
+                    cart.splice(index, 1);
+                }
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const badge = document.getElementById('cart-badge');
+            const container = document.getElementById('cart-items-container');
+            const subtotalEl = document.getElementById('cart-subtotal');
+            const totalEl = document.getElementById('cart-total');
+            const discountRow = document.getElementById('discount-row');
+            const discountEl = document.getElementById('cart-discount');
+
+            const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+            if (badge) badge.innerText = totalItems;
+
+            if (!container) return;
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-slate-400">
+                        <i data-lucide="shopping-bag" class="w-12 h-12 mx-auto mb-3 opacity-30"></i>
+                        <p class="text-sm font-medium">Votre panier est vide</p>
+                        <p class="text-xs text-slate-400 mt-1">Découvrez nos alliances et montres d'exception.</p>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = cart.map((item, index) => `
+                    <div class="flex items-center gap-3 bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                        <img src="${item.image}" class="w-16 h-16 rounded-xl object-cover shrink-0">
+                        <div class="flex-1 min-w-0">
+                            <h4 class="font-bold text-xs text-slate-900 truncate">${item.name}</h4>
+                            <p class="text-xs font-bold text-amber-700 mt-0.5">${formatPrice(item.price)}</p>
+                            ${item.engraving ? `<p class="text-[10px] text-amber-800 italic mt-0.5">Gravure: "${item.engraving}"</p>` : ''}
+                            
+                            <div class="flex items-center gap-2 mt-2">
+                                <button onclick="updateCartQty(${index}, -1)" class="w-5 h-5 bg-white rounded border border-slate-200 flex items-center justify-center text-xs font-bold">-</button>
+                                <span class="text-xs font-semibold">${item.qty}</span>
+                                <button onclick="updateCartQty(${index}, 1)" class="w-5 h-5 bg-white rounded border border-slate-200 flex items-center justify-center text-xs font-bold">+</button>
+                            </div>
+                        </div>
+                        <button onclick="removeFromCart(${index})" class="text-slate-400 hover:text-red-500 p-1">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+
+            const rawSubtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const discountAmount = (rawSubtotal * appliedDiscountPercent) / 100;
+            const finalTotal = rawSubtotal - discountAmount;
+
+            if (subtotalEl) subtotalEl.innerText = formatPrice(rawSubtotal);
+            if (totalEl) totalEl.innerText = formatPrice(finalTotal);
+
+            if (appliedDiscountPercent > 0 && discountRow && discountEl) {
+                discountRow.classList.remove('hidden');
+                discountEl.innerText = `-${formatPrice(discountAmount)}`;
+            } else if (discountRow) {
+                discountRow.classList.add('hidden');
+            }
+
+            if (window.lucide) lucide.createIcons();
+        }
+
+        /* Cart & Navigation Toggle */
+        function toggleCart() {
+            const panel = document.getElementById('cart-panel');
+            const overlay = document.getElementById('cart-overlay');
+            if (!panel || !overlay) return;
+
+            const isOpen = !panel.classList.contains('translate-x-full');
+            if (isOpen) {
+                panel.classList.add('translate-x-full');
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+            } else {
+                panel.classList.remove('translate-x-full');
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+            }
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            if (menu) menu.classList.toggle('hidden');
+        }
+
+        /* Product Detail Modal */
+        function openProductModal(productId) {
+            const product = productsData.find(p => p.id === productId);
+            if (!product) return;
+
+            selectedProductForModal = product;
+            document.getElementById('modal-img').src = product.image;
+            document.getElementById('modal-title').innerText = product.name;
+            document.getElementById('modal-category').innerText = product.categoryLabel || CATEGORIES_MAP[product.category];
+            document.getElementById('modal-price').innerText = formatPrice(product.price);
+            document.getElementById('modal-old-price').innerText = product.oldPrice ? formatPrice(product.oldPrice) : '';
+            document.getElementById('modal-desc').innerText = product.desc;
+
+            const engravingBox = document.getElementById('modal-engraving-container');
+            if (engravingBox) {
+                if (product.isRing) {
+                    engravingBox.classList.remove('hidden');
+                } else {
+                    engravingBox.classList.add('hidden');
+                }
+            }
+
+            const addBtn = document.getElementById('modal-add-btn');
+            const waBtn = document.getElementById('modal-direct-wa-btn');
+
+            addBtn.onclick = () => {
+                const engravingInput = document.getElementById('modal-engraving-input');
+                const engravingText = engravingInput ? engravingInput.value : '';
+                addToCart(product.id, engravingText);
+                closeProductModal();
+            };
+
+            waBtn.onclick = () => {
+                const engravingInput = document.getElementById('modal-engraving-input');
+                const engravingText = engravingInput ? engravingInput.value : '';
+                
+                let text = `Bonjour *${storeConfig.name}*, je souhaite commander cet article :\n\n`;
+                text += `• *${product.name}*\n`;
+                text += `• Prix : ${formatPrice(product.price)}\n`;
+                if (engravingText) text += `• Gravure demandée : "${engravingText}"\n`;
+                text += `\nMerci de me donner les détails de livraison.`;
+
+                const url = `https://wa.me/${storeConfig.whatsapp.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(text)}`;
+                window.open(url, '_blank');
+            };
+
+            document.getElementById('product-modal').classList.remove('hidden');
+        }
+
+        function closeProductModal() {
+            document.getElementById('product-modal').classList.add('hidden');
+        }
+
+        /* Category Filter Trigger */
+        function filterByCategory(catId) {
+            activeCategory = catId;
+            renderCategories();
+            renderProducts();
+        }
+
+        /* Search & Sort Handlers */
+        function handleSearch() {
+            searchQuery = document.getElementById('search-input').value;
+            renderProducts();
+        }
+
+        function handleSort() {
+            currentSort = document.getElementById('sort-select').value;
+            renderProducts();
+        }
+
+        /* Promo Code Handling */
+        function applyPromoCode() {
+            const input = document.getElementById('promo-input');
+            if (!input) return;
+
+            const code = input.value.trim().toUpperCase();
+            if (code === 'DSMARIAGE') {
+                appliedDiscountPercent = 10;
+                showToast('Code DSMARIAGE appliqué (-10%) !');
+                updateCartUI();
+            } else {
+                showToast('Code promo invalide.');
+            }
+        }
+
+        /* Checkout via WhatsApp */
+        function checkoutWhatsApp() {
+            if (cart.length === 0) {
+                showToast('Votre panier est vide !');
+                return;
+            }
+
+            let message = `Bonjour *${storeConfig.name}*, voici ma commande :\n\n`;
+            
+            cart.forEach((item, index) => {
+                message += `${index + 1}. *${item.name}* (x${item.qty})\n`;
+                message += `   Prix : ${formatPrice(item.price * item.qty)}\n`;
+                if (item.engraving) {
+                    message += `   Gravure : "${item.engraving}"\n`;
+                }
+            });
+
+            const rawSubtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const discount = (rawSubtotal * appliedDiscountPercent) / 100;
+            const total = rawSubtotal - discount;
+
+            if (appliedDiscountPercent > 0) {
+                message += `\nRemise promo (${appliedDiscountPercent}%) : -${formatPrice(discount)}\n`;
+            }
+
+            message += `\n*TOTAL A PAYER : ${formatPrice(total)}*\n\n`;
+            message += `Merci de me confirmer la disponibilité et les modalités de livraison !`;
+
+            const url = `https://wa.me/${storeConfig.whatsapp.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+
+        /* Settings Modal Operations */
+        function openSettingsModal() {
+            document.getElementById('setting-name').value = storeConfig.name;
+            document.getElementById('setting-subtitle').value = storeConfig.subtitle;
+            document.getElementById('setting-whatsapp').value = storeConfig.whatsapp;
+            document.getElementById('setting-currency').value = storeConfig.currency;
+            document.getElementById('settings-modal').classList.remove('hidden');
+        }
+
+        function closeSettingsModal() {
+            document.getElementById('settings-modal').classList.add('hidden');
+        }
+
+        function saveSettings(e) {
+            e.preventDefault();
+            storeConfig.name = document.getElementById('setting-name').value || storeConfig.name;
+            storeConfig.subtitle = document.getElementById('setting-subtitle').value || storeConfig.subtitle;
+            storeConfig.whatsapp = document.getElementById('setting-whatsapp').value || storeConfig.whatsapp;
+            storeConfig.currency = document.getElementById('setting-currency').value || storeConfig.currency;
+
+            saveStoreConfig();
+            applyStoreConfigUI();
+
+            updateCartUI();
+            renderProducts();
+            closeSettingsModal();
+            showToast('Paramètres et numéro WhatsApp sauvegardés !');
+        }
+
+        /* Toast Feedback */
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            if (!toast || !toastMsg) return;
+
+            toastMsg.innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+            }, 3000);
+        }
+
+        /* Initialization on Page Load */
+        window.addEventListener('DOMContentLoaded', () => {
+            loadStoreConfig();
+            loadProductsFromStorage();
+            renderCategories();
+            renderProducts();
+            updateCartUI();
+            if (window.lucide) lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
