@@ -423,8 +423,7 @@
 
         let productsData = [], cart = [], activeCategory = "all", searchQuery = "", currentSort = "default", selectedProductForModal = null, appliedDiscountPercent = 0, currentUser = null;
 
-        function loadProductsFromStorage() {
-            async function loadProductsFromStorage() {
+           async function loadProductsFromStorage() {
     if (!supabaseClient) { productsData = [...INITIAL_PRODUCTS]; return; }
     const { data, error } = await supabaseClient.from('products').select('*').order('created_at', { ascending: false });
     if (error || !data || data.length === 0) {
@@ -432,7 +431,6 @@
     } else {
         productsData = data.map(p => ({ ...p, categoryLabel: p.category_label, oldPrice: p.old_price, isRing: p.is_ring, desc: p.description }));
     }
-}
         }
        function saveProductsToStorage() { /* plus utilisé, tout passe par Supabase */ } 
         function formatPrice(amount) { return Number(amount).toLocaleString('fr-FR') + ' ' + storeConfig.currency; }
