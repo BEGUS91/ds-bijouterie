@@ -573,13 +573,19 @@ function openSettingsModal() { if (!IS_ADMIN) return; const m = document.getElem
 
         window.addEventListener('DOMContentLoaded', async () => {
     loadStoreConfig();
-    await loadProductsFromStorage();   // ← ajoutez await
+    await loadProductsFromStorage();
     loadCartFromStorage();
-    applyAdminVisibility();
+    await checkSession();  // Récupérer d'abord l'utilisateur connecté
+
+    // Vérification : le paramètre admin est présent ET l'utilisateur connecté est vous-même
+    const isRealAdmin = IS_ADMIN && currentUser && currentUser.email === 'augustin19910@gmail.com';
+    document.querySelectorAll('[data-admin-only]').forEach(el => {
+        el.style.display = isRealAdmin ? '' : 'none';
+    });
+
     renderCategories();
     renderProducts();
     updateCartUI();
-    await checkSession();
     if (window.lucide) lucide.createIcons();
 });
     </script>
