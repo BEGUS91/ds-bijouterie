@@ -425,13 +425,13 @@
 
         function loadProductsFromStorage() {
             async function loadProductsFromStorage() {
-  if (!supabaseClient) { productsData = [...INITIAL_PRODUCTS]; return; }
-  const { data, error } = await supabaseClient.from('products').select('*').order('created_at', { ascending: false });
-  if (error || !data || data.length === 0) {
-    productsData = [...INITIAL_PRODUCTS];
-  } else {
-    productsData = data.map(p => ({ ...p, categoryLabel: p.category_label, oldPrice: p.old_price, isRing: p.is_ring, desc: p.description }));
-  }
+    if (!supabaseClient) { productsData = [...INITIAL_PRODUCTS]; return; }
+    const { data, error } = await supabaseClient.from('products').select('*').order('created_at', { ascending: false });
+    if (error || !data || data.length === 0) {
+        productsData = [...INITIAL_PRODUCTS];
+    } else {
+        productsData = data.map(p => ({ ...p, categoryLabel: p.category_label, oldPrice: p.old_price, isRing: p.is_ring, desc: p.description }));
+    }
 }
         }
        function saveProductsToStorage() { /* plus utilisé, tout passe par Supabase */ } 
@@ -554,6 +554,7 @@ async function saveProductFromAdmin(e) {
   }
   await loadProductsFromStorage();
   renderProducts();
+      updateAdminListUI();
   closeAdminModal();
 }
         function editProductFromAdmin(id) { const p = productsData.find(x => x.id == id); if (!p) return; document.getElementById('prod-edit-id').value = p.id; document.getElementById('prod-name').value = p.name; document.getElementById('prod-category').value = p.category; document.getElementById('prod-tag').value = p.tag || ''; document.getElementById('prod-price').value = p.price; document.getElementById('prod-old-price').value = p.oldPrice || ''; document.getElementById('prod-image').value = p.image; document.getElementById('prod-desc').value = p.desc; document.getElementById('prod-is-ring').checked = !!p.isRing; document.getElementById('prod-popular').checked = !!p.popular; document.getElementById('prod-submit-btn').innerHTML = `<i data-lucide="check" class="w-4 h-4"></i> Mettre à jour`; switchAdminTab('add'); if (window.lucide) lucide.createIcons(); }
@@ -573,16 +574,16 @@ function openSettingsModal() { if (!IS_ADMIN) return; const m = document.getElem
         function showToast(msg) { const toast = document.getElementById('toast'); const toastMsg = document.getElementById('toast-message'); if (!toast || !toastMsg) return; toastMsg.innerText = msg; toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none'); setTimeout(() => { toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none'); }, 3000); }
 
         window.addEventListener('DOMContentLoaded', async () => {
-            loadStoreConfig();
-            loadProductsFromStorage();
-            loadCartFromStorage();
-            applyAdminVisibility();
-            renderCategories();
-            renderProducts();
-            updateCartUI();
-            await checkSession();
-            if (window.lucide) lucide.createIcons();
-        });
+    loadStoreConfig();
+    await loadProductsFromStorage();   // ← ajoutez await
+    loadCartFromStorage();
+    applyAdminVisibility();
+    renderCategories();
+    renderProducts();
+    updateCartUI();
+    await checkSession();
+    if (window.lucide) lucide.createIcons();
+});
     </script>
 </body>
 </html>
